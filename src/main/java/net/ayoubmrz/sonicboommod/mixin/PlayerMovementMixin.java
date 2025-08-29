@@ -28,7 +28,7 @@ public class PlayerMovementMixin {
 	private boolean sonicBoom = false;
 	private boolean timerStart = false;
 	private int timer = 0;
-	public boolean isSonicBoom = false;
+
 
 	@Inject(method = "tick", at = @At("HEAD"))
 	private void onPlayerTick(CallbackInfo ci) {
@@ -57,13 +57,6 @@ public class PlayerMovementMixin {
 
 			if (numberToBoom == 0 && !sonicBoom) {
 
-				ItemStack stack = new ItemStack(ModBlocks.EGLE_STATUE, 1);
-				boolean inserted = player.getInventory().insertStack(stack);
-
-				if (!inserted) {
-					player.dropItem(stack, false);
-				}
-
 				player.getWorld().playSound(
 						null,
 						player.getX(), player.getY(), player.getZ(),
@@ -76,10 +69,18 @@ public class PlayerMovementMixin {
 				if (player.getWorld() instanceof ServerWorld serverWorld) {
 
 					serverWorld.spawnParticles(
-							ModParticles.SONIC_BOOM,
+							ModParticles.SONIC_BOOM_EFFECT,
 							player.getX(), player.getY(), player.getZ(),
 							1, 0.0, 0.0, 0.0, 0.0
 					);
+
+					ItemStack stack = new ItemStack(ModBlocks.EGLE_STATUE, 1);
+					boolean inserted = player.getInventory().insertStack(stack);
+
+					if (!inserted) {
+						player.dropItem(stack, false);
+					}
+
 				}
 				sonicBoom = true;
 				timerStart = true;

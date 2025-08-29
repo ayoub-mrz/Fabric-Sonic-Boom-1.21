@@ -8,11 +8,11 @@ import net.minecraft.util.Identifier;
 
 public class ModParticles {
 
-    public static final SimpleParticleType SONIC_BOOM = FabricParticleTypes.simple();
+    public static final SimpleParticleType SONIC_BOOM_EFFECT = FabricParticleTypes.simple(true);
 
     public static void registerParticles() {
         Registry.register(Registries.PARTICLE_TYPE,
-                Identifier.of("sonicboommod", "sonic_boom"),
-                SONIC_BOOM);
+                Identifier.of("sonicboommod", "sonic_boom_effect"),
+                SONIC_BOOM_EFFECT);
     }
 }

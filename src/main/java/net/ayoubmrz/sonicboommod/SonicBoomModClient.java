@@ -15,7 +15,7 @@ public class SonicBoomModClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.EGLE_STATUE, RenderLayer.getCutout());
 
         ParticleFactoryRegistry.getInstance().register(
-                ModParticles.SONIC_BOOM,
+                ModParticles.SONIC_BOOM_EFFECT,
                 SonicBoomParticle.Factory::new
         );
     }

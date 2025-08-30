@@ -111,15 +111,16 @@ public class PlayerMovementMixin {
 		lastPosition = currentPos;
 	}
 
-//	@Inject(method = "readCustomData", at = @At("TAIL"))
-//	protected void readCustomData(ReadView view) {
-//		this.hasGotItem = view.getBoolean("hasGotItem", false);
-//	}
-//
-//	@Inject(method = "writeCustomData", at = @At("TAIL"))
-//	protected void writeCustomData(WriteView view) {
-//		view.putBoolean("hasGotItem", this.hasGotItem);
-//	}
+	@Inject(method = "readCustomData", at = @At("TAIL"))
+	protected void readCustomData(ReadView view, CallbackInfo ci) {
+		this.hasGotItem = view.getBoolean("hasGotItem", false);
+	}
+
+	@Inject(method = "writeCustomData", at = @At("TAIL"))
+	protected void writeCustomData(WriteView view, CallbackInfo ci) {
+		view.putBoolean("hasGotItem", this.hasGotItem);
+	}
+
 }
 
 

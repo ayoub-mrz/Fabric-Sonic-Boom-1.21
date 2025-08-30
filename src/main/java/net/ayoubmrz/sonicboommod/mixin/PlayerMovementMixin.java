@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PlayerEntity.class)
 public class PlayerMovementMixin {
 	private Vec3d lastPosition = Vec3d.ZERO;
-	private int numberToBoom = 30;
+	private int numberToBoom = 25;
 	private boolean sonicBoom = false;
 	private boolean timerStart = false;
 	private int timer = 0;
@@ -41,7 +41,7 @@ public class PlayerMovementMixin {
 			double speed = currentPos.distanceTo(lastPosition);
 			ItemStack chestItem = player.getEquippedStack(EquipmentSlot.CHEST);
 
-			if (speed > 1.72 && !sonicBoom && chestItem.isOf(Items.ELYTRA)) {
+			if (speed > 1.7 && !sonicBoom && chestItem.isOf(Items.ELYTRA)) {
 				numberToBoom--;
 			}
 
@@ -84,8 +84,6 @@ public class PlayerMovementMixin {
 						}
 						hasGotItem = true;
 
-						// Save the hasGotItem state to NBT
-						saveHasGotItemToNBT(player);
 					}
 				}
 				sonicBoom = true;
@@ -124,11 +122,5 @@ public class PlayerMovementMixin {
 		NbtCompound sonicBoomData = new NbtCompound();
 		sonicBoomData.putBoolean(HAS_GOT_ITEM_KEY, this.hasGotItem);
 		nbt.put(SONIC_BOOM_DATA_KEY, sonicBoomData);
-	}
-
-	private void saveHasGotItemToNBT(PlayerEntity player) {
-		if (player instanceof ServerPlayerEntity serverPlayer) {
-			serverPlayer.getServer().getPlayerManager().loadPlayerData(serverPlayer);
-		}
 	}
 }

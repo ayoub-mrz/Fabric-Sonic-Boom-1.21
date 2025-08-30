@@ -13,6 +13,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
@@ -109,18 +111,25 @@ public class PlayerMovementMixin {
 		lastPosition = currentPos;
 	}
 
-	@Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
-	private void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
-		if (nbt.contains(SONIC_BOOM_DATA_KEY)) {
-			NbtCompound sonicBoomData = nbt.getCompound(SONIC_BOOM_DATA_KEY).orElse(new NbtCompound());
-			this.hasGotItem = sonicBoomData.getBoolean(HAS_GOT_ITEM_KEY).orElse(false);
-		}
-	}
-
-	@Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
-	private void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
-		NbtCompound sonicBoomData = new NbtCompound();
-		sonicBoomData.putBoolean(HAS_GOT_ITEM_KEY, this.hasGotItem);
-		nbt.put(SONIC_BOOM_DATA_KEY, sonicBoomData);
-	}
+//	@Inject(method = "readCustomData", at = @At("TAIL"))
+//	protected void readCustomData(ReadView view) {
+//		this.hasGotItem = view.getBoolean("hasGotItem", false);
+//	}
+//
+//	@Inject(method = "writeCustomData", at = @At("TAIL"))
+//	protected void writeCustomData(WriteView view) {
+//		view.putBoolean("hasGotItem", this.hasGotItem);
+//	}
 }
+
+
+
+
+
+
+
+
+
+
+
+

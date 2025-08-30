@@ -13,7 +13,7 @@ public class SonicBoomMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-//		ModParticles.registerParticles();
-//		ModBlocks.registerModBlocks();
+		ModParticles.registerParticles();
+		ModBlocks.registerModBlocks();
 	}
 }

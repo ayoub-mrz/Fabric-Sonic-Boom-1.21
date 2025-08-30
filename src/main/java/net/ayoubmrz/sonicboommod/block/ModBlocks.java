@@ -28,7 +28,7 @@ public class ModBlocks {
 
     private static void registerBlockItem(String name, Block block) {
         Registry.register(Registries.ITEM, Identifier.of(SonicBoomMod.MOD_ID, name),
-                new BlockItem(block, new Item.Settings().useBlockPrefixedTranslationKey()
+                new BlockItem(block, new Item.Settings().useBlockPrefixedTranslationKey().rarity(Rarity.EPIC).maxCount(1)
                         .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(SonicBoomMod.MOD_ID, name)))));
     }
 

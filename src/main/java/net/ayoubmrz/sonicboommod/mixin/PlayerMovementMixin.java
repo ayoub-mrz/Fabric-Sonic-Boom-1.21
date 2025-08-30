@@ -93,7 +93,7 @@ public class PlayerMovementMixin {
 
 				// grant Sonic Boom Advancement
 				if (player instanceof ServerPlayerEntity serverPlayer) {
-					Identifier advancementId = Identifier.of("sonicboommod", "sonic_boom");
+					Identifier advancementId = Identifier.of("sonicboommod", "end/sonic_boom");
 					AdvancementEntry advancementEntry = serverPlayer.getServer().getAdvancementLoader().get(advancementId);
 
 					if (advancementEntry != null) {

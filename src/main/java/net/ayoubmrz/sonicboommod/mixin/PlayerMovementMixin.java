@@ -112,8 +112,8 @@ public class PlayerMovementMixin {
 	@Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
 	private void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
 		if (nbt.contains(SONIC_BOOM_DATA_KEY)) {
-			NbtCompound sonicBoomData = nbt.getCompound(SONIC_BOOM_DATA_KEY);
-			this.hasGotItem = sonicBoomData.getBoolean(HAS_GOT_ITEM_KEY);
+			NbtCompound sonicBoomData = nbt.getCompound(SONIC_BOOM_DATA_KEY).orElse(new NbtCompound());
+			this.hasGotItem = sonicBoomData.getBoolean(HAS_GOT_ITEM_KEY).orElse(false);
 		}
 	}
 

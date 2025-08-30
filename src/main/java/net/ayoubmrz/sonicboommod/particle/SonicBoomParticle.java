@@ -29,9 +29,9 @@ public class SonicBoomParticle extends SpriteBillboardParticle {
 
     @Override
     public void tick() {
-        this.prevPosX = this.x;
-        this.prevPosY = this.y;
-        this.prevPosZ = this.z;
+        this.lastX = this.x;
+        this.lastY = this.y;
+        this.lastZ = this.z;
 
         if (this.age++ >= this.maxAge) {
             this.markDead();

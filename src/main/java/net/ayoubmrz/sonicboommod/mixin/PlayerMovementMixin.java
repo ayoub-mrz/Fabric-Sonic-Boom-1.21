@@ -60,6 +60,12 @@ public class PlayerMovementMixin {
 
 			if (numberToBoom == 0 && !sonicBoom) {
 
+				// Increase player speed
+				Vec3d currentVelocity = player.getVelocity();
+				Vec3d boostedVelocity = currentVelocity.multiply(2.0);
+				player.setVelocity(boostedVelocity);
+				player.velocityModified = true;
+
 				player.getWorld().playSound(
 						null,
 						player.getX(), player.getY(), player.getZ(),

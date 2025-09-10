@@ -40,7 +40,6 @@ public class PlayerMovementMixin {
 		PlayerEntity player = (PlayerEntity) (Object) this;
 		Vec3d currentPos = player.getPos();
 		double speed = player.getVelocity().length();
-		player.sendMessage(Text.literal("Sonic: " + Math.round(speed)), true);
 
 		if (!currentPos.equals(lastPosition)) {
 			ItemStack chestItem = player.getEquippedStack(EquipmentSlot.CHEST);
@@ -54,7 +53,6 @@ public class PlayerMovementMixin {
 			}
 
 			if (timer == 1200) {
-				player.sendMessage(Text.literal("Sonic Boom Count Reset!"), true);
 				this.sonicBoom = false;
 				this.numberToBoom = 20;
 				this.timerStart = false;

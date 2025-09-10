@@ -13,6 +13,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,11 +24,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PlayerEntity.class)
 public class PlayerMovementMixin {
 	private Vec3d lastPosition = Vec3d.ZERO;
-	private int numberToBoom = 25;
+	private int numberToBoom = 35;
 	private boolean sonicBoom = false;
 	private boolean timerStart = false;
 	private int timer = 0;
 	private boolean hasGotItem = false;
+	private int speedBoostDuration = 0;
+	private Vec3d baseVelocity = Vec3d.ZERO;
 
 	private static final String SONIC_BOOM_DATA_KEY = "SonicBoomMod";
 	private static final String HAS_GOT_ITEM_KEY = "hasGotItem";
@@ -36,9 +39,10 @@ public class PlayerMovementMixin {
 	private void onPlayerTick(CallbackInfo ci) {
 		PlayerEntity player = (PlayerEntity) (Object) this;
 		Vec3d currentPos = player.getPos();
+		double speed = player.getVelocity().length();
+		player.sendMessage(Text.literal("Sonic: " + Math.round(speed)), true);
 
 		if (!currentPos.equals(lastPosition)) {
-			double speed = currentPos.distanceTo(lastPosition);
 			ItemStack chestItem = player.getEquippedStack(EquipmentSlot.CHEST);
 
 			if (speed > 1.7 && !sonicBoom && chestItem.isOf(Items.ELYTRA)) {
@@ -50,19 +54,33 @@ public class PlayerMovementMixin {
 			}
 
 			if (timer == 1200) {
+				player.sendMessage(Text.literal("Sonic Boom Count Reset!"), true);
 				this.sonicBoom = false;
 				this.numberToBoom = 20;
 				this.timerStart = false;
 				this.timer = 0;
 			}
 
+			if (speedBoostDuration > 0) {
+				if (speedBoostDuration == 20) {
+					baseVelocity = player.getVelocity();
+				}
+
+				Vec3d lookDirection = player.getRotationVector();
+				double impulseStrength = 1.4;
+				Vec3d impulse = lookDirection.multiply(impulseStrength);
+
+				Vec3d newVelocity = baseVelocity.add(impulse);
+				player.setVelocity(newVelocity);
+				player.velocityModified = true;
+
+				speedBoostDuration--;
+			}
+
 			if (numberToBoom == 0 && !sonicBoom) {
 
 				// Increase player speed
-				Vec3d currentVelocity = player.getVelocity();
-				Vec3d boostedVelocity = currentVelocity.multiply(2.0);
-				player.setVelocity(boostedVelocity);
-				player.velocityModified = true;
+				speedBoostDuration = 20;
 
 				player.getWorld().playSound(
 						null,
@@ -92,6 +110,7 @@ public class PlayerMovementMixin {
 
 					}
 				}
+
 				sonicBoom = true;
 				timerStart = true;
 
